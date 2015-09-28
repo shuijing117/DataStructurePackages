@@ -5,6 +5,8 @@
     > Mail: 100431075@qq.com 
     > Created Time: Sun 27 Sep 2015 04:48:32 PM CST
  ************************************************************************/
+#ifndef DYNAMICARRAY_H
+
 #include <malloc.h>
 #include <stdlib.h>
 #include <time.h>
@@ -27,6 +29,32 @@ int GetElem(const DynamicArray array, int index, datatype *data);
 int GetSubArray(const DynamicArray array, DynamicArray *subArray, int index, int size);
 int GetRandomElem(const DynamicArray array, datatype *data);
 int CombineArray(DynamicArray *array1, const DynamicArray array2);
+int Find(const DynamicArray array, datatype data, int (*compare)(datatype, datatype));
+int IsEmpty(const DynamicArray array);
+int IsFull(const DynamicArray array);
+
+int IsFull(const DynamicArray array)
+{
+	return array.count >= array.size;
+}
+
+int IsEmpty(const DynamicArray array)
+{
+	return array.count <= 0;
+}
+
+int Find(const DynamicArray array, datatype data, int (*compare)(datatype, datatype))
+{
+	int i;
+
+	for(i = 0; i < array.count; i++) {
+		if(compare(array.data[i], data)) {
+			return i;
+		}
+	}
+
+	return -1;
+}
 
 int CombineArray(DynamicArray *array1, const DynamicArray array2)
 {
@@ -51,7 +79,7 @@ int CombineArray(DynamicArray *array1, const DynamicArray array2)
 int GetRandomElem(const DynamicArray array, datatype *data)
 {
 	int index;
-	if(array.count <= 0) {
+	if(IsEmpty(array)) {
 		return -1;
 	}
 
@@ -163,7 +191,7 @@ int InsertArray(DynamicArray *array, datatype data, int index)
 		return -2;
 	}
 
-	if(array->count >= array->size) {
+	if(IsFull(*array)) {
 		ExpandArray(&array);
 	}
 
@@ -202,3 +230,5 @@ int InitArray(DynamicArray *array, int size)
 
 	return 0;
 }
+
+#endif

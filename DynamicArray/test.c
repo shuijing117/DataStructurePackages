@@ -13,6 +13,12 @@
 #include "DynamicArray.h"
 
 void Print(DynamicArray array);
+int compare(datatype data1, datatype data2);
+
+int compare(datatype data1, datatype data2)
+{
+	return data1 == data2;
+}
 
 void Print(DynamicArray array)
 {
@@ -67,6 +73,9 @@ int main(void)
 
 	CombineArray(&array, subArray);
 	Print(array);
+
+	scanf("%d", &data);
+	printf("%d\n", Find(array, data, compare));
 
 	DestoryArray(&subArray);
 	DestoryArray(&array);
