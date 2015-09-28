@@ -26,6 +26,27 @@ int ExpandArray(DynamicArray **array);
 int GetElem(const DynamicArray array, int index, datatype *data);
 int GetSubArray(const DynamicArray array, DynamicArray *subArray, int index, int size);
 int GetRandomElem(const DynamicArray array, datatype *data);
+int CombineArray(DynamicArray *array1, const DynamicArray array2);
+
+int CombineArray(DynamicArray *array1, const DynamicArray array2)
+{
+	int i;
+
+	if(array1 == NULL) {
+		return -1;
+	}
+
+	while(array1->count + array2.count > array1->size) {
+		ExpandArray(&array1);
+	}
+
+	for(i = 0; i < array2.count; i++) {
+		array1->data[array1->count+i] = array2.data[i];
+	}
+	array1->count += array2.count;
+
+	return 0;
+}
 
 int GetRandomElem(const DynamicArray array, datatype *data)
 {
@@ -38,7 +59,6 @@ int GetRandomElem(const DynamicArray array, datatype *data)
 
 	index = rand() % array.count;
 
-	printf("%d : ", index);
 	*data = array.data[index-1];
 
 	return 0;

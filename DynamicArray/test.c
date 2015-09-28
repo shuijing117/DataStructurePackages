@@ -65,6 +65,9 @@ int main(void)
 	GetRandomElem(array, &data);
 	printf("%d\n", data);
 
+	CombineArray(&array, subArray);
+	Print(array);
+
 	DestoryArray(&subArray);
 	DestoryArray(&array);
 
