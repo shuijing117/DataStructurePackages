@@ -16,7 +16,7 @@ typedef int datatype;
 typedef struct _LINKLIST {
 	datatype data;
 	struct _LINKLIST *next;
-}Node, * Position;
+}Node, *Position;
 
 typedef struct _LINKLISTHEAD {
 	int count;

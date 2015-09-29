@@ -13,11 +13,11 @@
 #include "LinkList.h"
 
 void Print(LinkList head);
-int compare(datatype data1, datatype data2);
+int compare(datatype data, datatype data1);
 
-int compare(datatype data1, datatype data2)
+int compare(datatype data, datatype data1)
 {
-	return data1 == data2;
+	return data1 == data;
 }
 
 void Print(LinkList head)
