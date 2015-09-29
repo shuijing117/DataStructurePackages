@@ -21,14 +21,11 @@ typedef struct _LINKLIST {
 typedef struct _LINKLISTHEAD {
 	int count;
 	struct _LINKLIST *next;
-}LinkList;
-
-#define  _HEAD_INSERT_  0
-#define  _TAIL_INSERT_  1
+}*LinkList, HeadNode;
 
 int InitLinkList(LinkList *head);
 int DestoryLinkList(LinkList *head);
-int InsertLinkList(LinkList *head, datatype data, int mode);
+int InsertLinkList(LinkList *head, datatype data, Position p);
 int TailInsert(LinkList *head, datatype data);
 int HeadInsert(LinkList *head, datatype data);
 Position Find(LinkList *head, datatype data, int (*compare)(datatype, datatype));
@@ -38,7 +35,7 @@ int IsEmpty(const LinkList head);
 
 int IsEmpty(const LinkList head)
 {
-	return head.count == 0;
+	return head->count == 0;
 }
 
 int Delete(LinkList *head, datatype data, int (*compare)(datatype, datatype))
@@ -54,8 +51,8 @@ int Delete(LinkList *head, datatype data, int (*compare)(datatype, datatype))
 		if(p == NULL) {
 			return -1;
 		} else if(p == (Position)1) {
-			q = head->next;
-			head->next = q->next;
+			q = (*head)->next;
+			(*head)->next = q->next;
 			free(q);
 		} else {
 			q = p->next;
@@ -63,14 +60,14 @@ int Delete(LinkList *head, datatype data, int (*compare)(datatype, datatype))
 			free(q);
 		}
 	}
-	head->count--;
+	(*head)->count--;
 
 	return 0;
 }
 
 Position FindPrevious(LinkList *head, datatype data, int (*compare)(datatype, datatype))
 {
-	Position p = head->next;
+	Position p = (*head)->next;
 
 	if(p == NULL) {
 		return NULL;
@@ -92,7 +89,7 @@ Position FindPrevious(LinkList *head, datatype data, int (*compare)(datatype, da
 
 Position Find(LinkList *head, datatype data, int (*compare)(datatype, datatype))
 {
-	Position p = head->next;
+	Position p = (*head)->next;
 
 	while(p) {
 		if(compare(p->data, data)) {
@@ -118,9 +115,9 @@ int HeadInsert(LinkList *head, datatype data)
 		return -1;
 	}
 	p->data = data;
-	p->next = head->next;
-	head->next = p;
-	head->count++;
+	p->next = (*head)->next;
+	(*head)->next = p;
+	(*head)->count++;
 
 	return 0;
 }
@@ -140,34 +137,36 @@ int TailInsert(LinkList *head, datatype data)
 	p->data = data;
 	p->next = NULL;
 
-	if(head->next == NULL) {
-		head->next = p;
+	if((*head)->next == NULL) {
+		(*head)->next = p;
 	} else {
-		for(q = head->next; q->next != NULL; q = q->next)
+		for(q = (*head)->next; q->next != NULL; q = q->next)
 			;
 
 		q->next = p;
 	}
-	head->count++;
+	(*head)->count++;
 
 	return 0;
 }
 
-int InsertLinkList(LinkList *head, datatype data, int mode)
+int InsertLinkList(LinkList *head, datatype data, Position p)
 {
+	Node *node;
+
 	if(head == NULL) {
 		return -1;
 	}
 
-	if(mode == _HEAD_INSERT_) {
-		if(HeadInsert(head, data)) {
-			return -1;
-		}
-	} else if(mode == _TAIL_INSERT_) {
-		if(TailInsert(head, data)) {
-			return -1;
-		}
+	node = (Node *)malloc(sizeof(Node));
+	if(node == NULL) {
+		return -2;
 	}
+	node->data = data;
+	node->next = p->next;
+	p->next = node;
+
+	(*head)->count++;
 
 	return 0;
 }
@@ -180,18 +179,18 @@ int DestoryLinkList(LinkList *head)
 		return -1;
 	}
 
-	if(head->count == 0) {
+	if((*head)->count == 0) {
 		return 0;
 	}
 
-	if(head->count == 1) {
-		free(head->next);
+	if((*head)->count == 1) {
+		free((*head)->next);
 		return 0;
 	}
 	
-	for(p = head->next->next; p != NULL; p = p->next) {
-		free(head->next);
-		head->next = p;
+	for(p = (*head)->next->next; p != NULL; p = p->next) {
+		free((*head)->next);
+		(*head)->next = p;
 	}
 
 	return 0;
@@ -203,8 +202,13 @@ int InitLinkList(LinkList *head)
 		return -1;
 	}
 
-	head->count = 0;
-	head->next = NULL;
+	*head = (LinkList)malloc(sizeof(HeadNode));
+	if(*head == NULL) {
+		return -1;
+	}
+
+	(*head)->count = 0;
+	(*head)->next = NULL;
 
 	return 0;
 }

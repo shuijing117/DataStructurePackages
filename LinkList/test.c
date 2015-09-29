@@ -25,7 +25,7 @@ void Print(LinkList head)
 	Node *p;
 	int i = 1;
 
-	p = head.next;
+	p = head->next;
 	while(p) {
 		printf("%d-%p:%d ", i, p, p->data);
 		p = p->next;
@@ -49,19 +49,20 @@ int main(void)
 	Print(head);
 
 	for(i = 0; i < 5; i++) {
-		InsertLinkList(&head, rand()%100, _HEAD_INSERT_);
+		HeadInsert(&head, rand()%100);
 	}
 
-	printf("count:%d\n", head.count);
+	printf("count:%d\n", head->count);
 	Print(head);
 
 	for(i = 0; i < 5; i++) {
-		InsertLinkList(&head, rand()%100, _TAIL_INSERT_);
+		TailInsert(&head, rand()%100);
 	}
 
-	printf("count:%d\n", head.count);
+	printf("count:%d\n", head->count);
 	Print(head);
 
+	printf("Find :");
 	scanf("%d", &data);
 	if(p = Find(&head, data, compare)) {
 		printf("%p:%d\n", p, p->data);
@@ -69,9 +70,12 @@ int main(void)
 		printf("none.\n");
 	}
 
+	InsertLinkList(&head, data+1, p);
+	Print(head);
+
 	if(p = FindPrevious(&head, data, compare)) {
 		if(p == (Position)1) {
-			printf("head:%p count:%d\n", &head, head.count);
+			printf("head:%p count:%d\n", &head, head->count);
 		} else {
 			printf("%p:%d %d\n", p, p->data, data);
 		}
@@ -79,6 +83,7 @@ int main(void)
 		printf("none.\n");
 	}
 
+	printf("Delete:");
 	scanf("%d", &data);
 	Delete(&head, data, compare);
 	Print(head);
