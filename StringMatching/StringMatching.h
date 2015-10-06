@@ -9,9 +9,15 @@
 
 #include <string.h>
 
-int SimpleMatching(const char * mStr, const char * pStr);
+int BruteForceMatching(const char *mStr, const char *pStr);
+int KMPMatching(const char *mStr, const char *pStr);
 
-int SimpleMatching(const char * mStr, const char * pStr)
+int KMPMatching(const char *mStr, const char *pStr)
+{
+	
+}
+
+int BruteForceMatching(const char *mStr, const char *pStr)
 {
 	int i, j;
 	int mStrLen = strlen(mStr);

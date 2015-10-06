@@ -40,7 +40,7 @@ int main(void)
 	printf("pattern string:");
 	scanf("%s", pStr);
 
-	position = SimpleMatching(mStr, pStr);
+	position = BruteForceMatching(mStr, pStr);
 //	printf("position : %d\n", position);
 	printf("SimpleMatching:\n");
 	Print(mStr, pStr, position);
