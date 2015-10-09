@@ -11,7 +11,7 @@
 
 #include "StringMatching.h"
 
-#define _MAX_SIZE_ 100
+#define _MAX_SIZE_ 1000
 
 void Print(const char *mStr, const char *pStr, int pos);
 
@@ -23,9 +23,9 @@ void Print(const char *mStr, const char *pStr, int pos)
 		printf("%s\n", mStr);
 		for(i = 0; i < pos; i++)
 			printf(" ");
-		printf("%s\n", pStr);
+		printf("%s\n\n", pStr);
 	} else {
-		printf("No Match.\n");
+		printf("No Match.\n\n");
 	}
 }
 
@@ -40,9 +40,14 @@ int main(void)
 	printf("pattern string:");
 	scanf("%s", pStr);
 
+	printf("\n\n");
 	position = BruteForceMatching(mStr, pStr);
 //	printf("position : %d\n", position);
-	printf("SimpleMatching:\n");
+	printf("BruteForceMatching:\n");
 	Print(mStr, pStr, position);
+	position = KMPMatching(mStr, pStr);
+	printf("KMPMatching:\n");
+	Print(mStr, pStr, position);
+
 	return 0;
 }
