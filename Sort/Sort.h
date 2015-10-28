@@ -19,6 +19,53 @@ int SelectionSort(datatype *array, const int size);
 int BubbleSort(datatype *array, const int size);
 int QuickSort(datatype *array, const int low, const int high);
 int MergeSort(datatype *array, const int low, const int high);
+int HeapSort(datatype *array, const int size);
+int HeapAdjust(datatype *array, const int size, int s);
+
+int HeapAdjust(datatype *array, const int size, int s)
+{
+	int i, temp;
+
+	if(array == NULL) {
+		return -1;
+	}
+
+	temp = array[s];
+	for(i = 2*s+1; i < size; i = 2*i+1) {
+		if(i < size-1 && array[i] < array[i+1]) {
+			++i;
+		}
+
+		if(temp >= array[i])
+			break;
+
+		array[s] = array[i];
+		s = i;
+	}
+	array[s] = temp;
+
+	return 0;
+}
+
+int HeapSort(datatype *array, const int size)
+{
+	int i;
+
+	if(array == NULL) {
+		return -1;
+	}
+
+	for(i = size/2; i > 0; i--) {
+		HeapAdjust(array, size, i-1);
+	}
+
+	for(i = size-1; i > 0; i--) {
+		Swap(array+i, array);
+		HeapAdjust(array, i, 0);
+	}
+
+	return 0;
+}
 
 int MergeSort(datatype *array, const int low, const int high)
 {

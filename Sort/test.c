@@ -38,7 +38,7 @@ int main(void)
 	srand((unsigned int)time(NULL));
 
 	for(i = 0; i < N; i++) {
-		data[i] = rand()%100;
+		data[i] = rand()%201;
 	}
 	Print(data, N);
 
@@ -68,6 +68,10 @@ int main(void)
 
 	printf("MergeSort:\n");
 	MergeSort(data, 0, N-1);
+	Print(data, N);
+
+	printf("HeapSort:\n");
+	HeapSort(data, N);
 	Print(data, N);
 
 	return 0;
