@@ -12,9 +12,9 @@
 
 int BruteForceMatching(const char *mStr, const char *pStr);
 int KMPMatching(const char *mStr, const char *pStr);
-void GetNext(const char *pStr, int *next);
+static void GetNext(const char *pStr, int *next);
 
-void GetNext(const char *pStr, int *next)
+static void GetNext(const char *pStr, int *next)
 {
 	int i = 0, j = -1;
 
