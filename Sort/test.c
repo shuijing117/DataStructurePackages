@@ -14,9 +14,19 @@
 
 #define N 40
 
-void Print(datatype *data, int size);
+void Print(datatype *data, const int size);
+void Copy(datatype *data1, datatype *data2, const int size);
 
-void Print(datatype *data, int size)
+void Copy(datatype *data1, datatype *data2, const int size)
+{
+	int i;
+
+	for(i = 0; i < size; i++) {
+		data2[i] = data1[i];
+	}
+}
+
+void Print(datatype *data, const int size)
 {
 	int i;
 
@@ -33,6 +43,7 @@ void Print(datatype *data, int size)
 int main(void)
 {
 	datatype data[N];
+	datatype temp[N];
 	int i;
 
 	srand((unsigned int)time(NULL));
@@ -41,37 +52,59 @@ int main(void)
 		data[i] = rand()%201;
 	}
 	Print(data, N);
+	Copy(data, temp, N);
+//	Print(temp, N);
 
 	printf("InsertionSort: \n");
+//	Print(data, N);
 	InsertionSort(data, N);
 	Print(data, N);
 
+	Copy(temp, data, N);
 	printf("BinaryInsertionSort:\n");
+//	Print(data, N);
 	BinaryInsertionSort(data, N);
 	Print(data, N);
 
+	Copy(temp, data, N);
 	printf("ShellSort:\n");
+//	Print(data, N);
 	ShellSort(data, N);
 	Print(data, N);
 
+	Copy(temp, data, N);
 	printf("SelectionSort:\n");
+//	Print(data, N);
 	SelectionSort(data, N);
 	Print(data, N);
 
+	Copy(temp, data, N);
 	printf("BubbleSort:\n");
+//	Print(data, N);
 	BubbleSort(data, N);
 	Print(data, N);
 
+	Copy(temp, data, N);
 	printf("QuickSort:\n");
+//	Print(data, N);
 	QuickSort(data, 0, N-1);
 	Print(data, N);
 
+	Copy(temp, data, N);
 	printf("MergeSort:\n");
+//	Print(data, N);
 	MergeSort(data, 0, N-1);
 	Print(data, N);
 
+	Copy(temp, data, N);
 	printf("HeapSort:\n");
+//	Print(data, N);
 	HeapSort(data, N);
+	Print(data, N);
+
+	Copy(temp, data, N);
+	printf("CountingSort:\n");
+	CountingSort(data, N);
 	Print(data, N);
 
 	return 0;

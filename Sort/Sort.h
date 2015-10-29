@@ -7,7 +7,9 @@
  ************************************************************************/
 #ifndef _SORT_H_
 
+#include <stdio.h>
 #include <malloc.h>
+#include <stdlib.h>
 
 typedef int datatype;
 
@@ -20,9 +22,67 @@ int BubbleSort(datatype *array, const int size);
 int QuickSort(datatype *array, const int low, const int high);
 int MergeSort(datatype *array, const int low, const int high);
 int HeapSort(datatype *array, const int size);
-int HeapAdjust(datatype *array, const int size, int s);
+static int HeapAdjust(datatype *array, const int size, int s);
+int HighOrderRadixSort(datatype *array, const int size);
+int LowOrderRadixSort(datatype *array, const int size);
+int BucketSort(datatype *array, const int size);
+int CountingSort(datatype *array, const int size);
 
-int HeapAdjust(datatype *array, const int size, int s)
+int CountingSort(datatype *array, const int size)
+{
+	int i, j, max, min;
+	int *temp = NULL;
+
+	if(array == NULL) {
+		return -1;
+	}
+
+	max = min = array[0];
+	for(i = 1; i < size; i++) {
+		if(array[i] > max) {
+			max = array[i];
+		}
+
+		if(array[i] < min) {
+			min = array[i]	;
+		}
+	}
+	
+	temp = (int *)calloc(max-min+1, sizeof(int));
+	if(temp == NULL) {
+		return -1;
+	}
+
+	for(i = 0; i < size; i++) {
+		temp[array[i]-min]++;
+	}
+
+	for(i = 0, j = 0; i <= max-min; i++) {
+		while(temp[i] > 0) {
+			array[j++] = i+min;
+			temp[i]--;
+		}
+	}
+
+	return 0;
+}
+
+int BucketSort(datatype *array, const int size)
+{
+	return 0;
+}
+
+int LowOrderRadixSort(datatype *array, const int size)
+{
+	return 0;
+}
+
+int HighOrderRadixSort(datatype *array, const int size)
+{
+	return 0;
+}
+
+static int HeapAdjust(datatype *array, const int size, int s)
 {
 	int i, temp;
 
@@ -161,16 +221,24 @@ int QuickSort(datatype *array, const int low, int high)
 int BubbleSort(datatype *array, const int size)
 {
 	int i, j;
+	int tag;
 
 	if(array == NULL) {
 		return -1;
 	}
 
 	for(i = 0; i < size; i++) {
-		for(j = i; j < size-1; j++) {
+		tag = 1;
+
+		for(j = 0; j < size-i-1; j++) {
 			if(array[j] > array[j+1]) {
 				Swap(array+j, array+j+1);
+				tag = 0;
 			}
+		}
+
+		if(tag) {
+			break;
 		}
 	}
 
@@ -203,10 +271,13 @@ int ShellSort(datatype *array, int size)
 	int i, j, temp;
 	int increment = size;
 
+	if(array == NULL) {
+		return -1;
+	}
+
 	while(increment > 1) {
 		increment = increment / 3 + 1;
 		for(i = increment; i < size; i++) {
-			if(array[i] < array[i-increment]) {
 				temp = array[i];
 				for(j = i-increment; j >= 0; j -= increment) {
 					if(temp >= array[j]) {
@@ -215,9 +286,10 @@ int ShellSort(datatype *array, int size)
 					array[j+increment] = array[j];
 				}
 				array[j+increment] = temp;
-			}
 		}
 	}
+
+	return 0;
 }
 
 int BinaryInsertionSort(datatype *array, int size)
