@@ -24,7 +24,7 @@ int DestoryArray(DynamicArray *array);
 int InsertArray(DynamicArray *array, datatype data, int index);
 int DeleteArray(DynamicArray *array, int index);
 int ClearArray(DynamicArray *array);
-int ExpandArray(DynamicArray **array);
+static int ExpandArray(DynamicArray **array);
 int GetElem(const DynamicArray array, int index, datatype *data);
 int GetSubArray(const DynamicArray array, DynamicArray *subArray, int index, int size);
 int GetRandomElem(const DynamicArray array, datatype *data);
@@ -123,7 +123,7 @@ int GetElem(const DynamicArray array, int index, datatype *data)
 	return 0;
 }
 
-int ExpandArray(DynamicArray **array)
+static int ExpandArray(DynamicArray **array)
 {
 	int i;
 	datatype *temp;
