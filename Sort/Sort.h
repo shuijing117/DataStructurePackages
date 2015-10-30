@@ -13,6 +13,11 @@
 
 typedef int datatype;
 
+typedef struct Node {
+	datatype data;
+	struct Node *next;
+}Node;
+
 void Swap(datatype *a, datatype *b);
 int InsertionSort(datatype *array, const int size);
 int BinaryInsertionSort(datatype *array, const int size);
@@ -25,7 +30,7 @@ int HeapSort(datatype *array, const int size);
 static int HeapAdjust(datatype *array, const int size, int s);
 int HighOrderRadixSort(datatype *array, const int size);
 int LowOrderRadixSort(datatype *array, const int size);
-int BucketSort(datatype *array, const int size);
+int BucketSort(datatype *array, const int size, const int numberLimits);
 int CountingSort(datatype *array, const int size);
 
 int CountingSort(datatype *array, const int size)
@@ -67,8 +72,53 @@ int CountingSort(datatype *array, const int size)
 	return 0;
 }
 
-int BucketSort(datatype *array, const int size)
+int BucketSort(datatype *array, const int size, const int numberLimits)
 {
+	int i, j;
+	Node **temp;
+	Node *p, *s;
+
+	if(array == NULL) {
+		return -1;
+	}
+
+	temp = (Node **)calloc(numberLimits / 10 + 1, sizeof(Node *));
+	if(temp == NULL) {
+		return -1;
+	}
+
+
+	for(i = 0; i < size; i++) {
+		p = temp[array[i] / 10];
+
+		s = (Node *)malloc(sizeof(Node));
+		if(s == NULL) {
+			return -1;
+		}
+		s->data = array[i];
+		s->next = NULL;
+
+		if(p == NULL)
+		{
+			temp[array[i] / 10] = s;
+		} else {
+			while(p->next != NULL && p->next->data < array[i])
+				p = p->next;
+
+			s->next = p->next;
+			p->next = s;
+		}
+		
+	}
+
+	for(i = 0, j = 0; i < numberLimits / 10 + 1; i++) {
+		p = temp[i];
+		while(p) {
+			array[j++] = p->data;
+			p = p->next;
+		}
+	}
+
 	return 0;
 }
 
