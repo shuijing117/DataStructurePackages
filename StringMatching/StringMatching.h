@@ -10,13 +10,22 @@
 #include <string.h>
 #include <malloc.h>
 
+#define		TRUE	1
+#define		FALSE	0
+
+typedef	int BOOL;
+
 int BruteForceMatching(const char *mStr, const char *pStr);
 int KMPMatching(const char *mStr, const char *pStr);
-static void GetNext(const char *pStr, int *next);
+static BOOL GetNext(const char *pStr, int *next);
 
-static void GetNext(const char *pStr, int *next)
+static BOOL GetNext(const char *pStr, int *next)
 {
 	int i = 0, j = -1;
+
+	if(pStr == NULL || next == NULL) {
+		return FALSE;
+	}
 
 	next[0] = -1;
 
@@ -34,12 +43,18 @@ static void GetNext(const char *pStr, int *next)
 	for(i = 0; i < strlen(pStr); i++)
 		printf("%d ", next[i]);
 	printf("\n");
+
+	return TRUE;
 }
 
 int KMPMatching(const char *mStr, const char *pStr)
 {
 	int i = 0, j = 0;
 	int *next;
+
+	if(mStr == NULL) {
+		return -1;
+	}
 
 	next = (int *)malloc(sizeof(int) * (strlen(pStr)+1));
 	if(next == NULL) {
@@ -75,7 +90,7 @@ int BruteForceMatching(const char *mStr, const char *pStr)
 	int i, j;
 	int mStrLen = strlen(mStr);
 	int pStrLen = strlen(pStr);
-	int count = 0;
+//	int count = 0;
 
 	for(i = 0; i < mStrLen; i++) {
 		for(j = 0; j < pStrLen; j++) {
