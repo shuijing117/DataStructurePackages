@@ -11,6 +11,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define		TRUE	1
+#define		FALSE	0
+
+typedef int BOOL;
 typedef int datatype;
 
 typedef struct _ARRAY {
@@ -19,26 +23,26 @@ typedef struct _ARRAY {
 	int count;
 }DynamicArray;
 
-int InitArray(DynamicArray *array, int size);
-int DestoryArray(DynamicArray *array);
-int InsertArray(DynamicArray *array, datatype data, int index);
-int DeleteArray(DynamicArray *array, int index);
-int ClearArray(DynamicArray *array);
-static int ExpandArray(DynamicArray **array);
-int GetElem(const DynamicArray array, int index, datatype *data);
-int GetSubArray(const DynamicArray array, DynamicArray *subArray, int index, int size);
-int GetRandomElem(const DynamicArray array, datatype *data);
-int CombineArray(DynamicArray *array1, const DynamicArray array2);
+BOOL InitArray(DynamicArray *array, int size);
+BOOL DestoryArray(DynamicArray *array);
+BOOL InsertArray(DynamicArray *array, datatype data, int index);
+BOOL DeleteArray(DynamicArray *array, int index);
+BOOL ClearArray(DynamicArray *array);
+static BOOL ExpandArray(DynamicArray **array);
+BOOL GetElem(const DynamicArray array, int index, datatype *data);
+BOOL GetSubArray(const DynamicArray array, DynamicArray *subArray, int index, int size);
+BOOL GetRandomElem(const DynamicArray array, datatype *data);
+BOOL CombineArray(DynamicArray *array1, const DynamicArray array2);
 int Find(const DynamicArray array, datatype data, int (*compare)(datatype, datatype));
-int IsEmpty(const DynamicArray array);
-int IsFull(const DynamicArray array);
+BOOL IsEmpty(const DynamicArray array);
+BOOL IsFull(const DynamicArray array);
 
-int IsFull(const DynamicArray array)
+BOOL IsFull(const DynamicArray array)
 {
 	return array.count >= array.size;
 }
 
-int IsEmpty(const DynamicArray array)
+BOOL IsEmpty(const DynamicArray array)
 {
 	return array.count <= 0;
 }
@@ -56,12 +60,12 @@ int Find(const DynamicArray array, datatype data, int (*compare)(datatype, datat
 	return -1;
 }
 
-int CombineArray(DynamicArray *array1, const DynamicArray array2)
+BOOL CombineArray(DynamicArray *array1, const DynamicArray array2)
 {
 	int i;
 
 	if(array1 == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	while(array1->count + array2.count > array1->size) {
@@ -73,14 +77,14 @@ int CombineArray(DynamicArray *array1, const DynamicArray array2)
 	}
 	array1->count += array2.count;
 
-	return 0;
+	return TRUE;
 }
 
-int GetRandomElem(const DynamicArray array, datatype *data)
+BOOL GetRandomElem(const DynamicArray array, datatype *data)
 {
 	int index;
 	if(IsEmpty(array)) {
-		return -1;
+		return FALSE;
 	}
 
 	srand((int)time(NULL));
@@ -89,19 +93,19 @@ int GetRandomElem(const DynamicArray array, datatype *data)
 
 	*data = array.data[index-1];
 
-	return 0;
+	return TRUE;
 }
 
-int GetSubArray(const DynamicArray array, DynamicArray *subArray, int index, int size)
+BOOL GetSubArray(const DynamicArray array, DynamicArray *subArray, int index, int size)
 {
 	int i;
 
 	if(subArray == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	if(index + size > array.count) {
-		return -2;
+		return FALSE;
 	}
 
 	for(i = index; i < index+size; i++) {
@@ -109,32 +113,32 @@ int GetSubArray(const DynamicArray array, DynamicArray *subArray, int index, int
 	}
 	subArray->count = size;
 
-	return 0;
+	return TRUE;
 }
 
-int GetElem(const DynamicArray array, int index, datatype *data)
+BOOL GetElem(const DynamicArray array, int index, datatype *data)
 {
 	if(index < 0 || index >= array.count) {
-		return -1;
+		return FALSE;
 	}
 
 	*data = array.data[index];
 
-	return 0;
+	return TRUE;
 }
 
-static int ExpandArray(DynamicArray **array)
+static BOOL ExpandArray(DynamicArray **array)
 {
 	int i;
 	datatype *temp;
 
 	if(*array == NULL) { 
-		return -1;
+		return FALSE;
 	}
 
 	temp = (datatype *)malloc(sizeof(datatype) * (*array)->size * 2);
 	if(temp == NULL) {
-		return -2;
+		return FALSE;
 	}
 	(*array)->size *= 2;
 	
@@ -145,30 +149,30 @@ static int ExpandArray(DynamicArray **array)
 	free((*array)->data);
 	(*array)->data = temp;
 
-	return 0;
+	return TRUE;
 }
 
-int ClearArray(DynamicArray *array)
+BOOL ClearArray(DynamicArray *array)
 {
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	array->count = 0;
 
-	return 0;
+	return TRUE;
 }
 
-int DeleteArray(DynamicArray *array, int index)
+BOOL DeleteArray(DynamicArray *array, int index)
 {
 	int i;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	if(index < 0 || index > array->count-1) {
-		return -2;
+		return FALSE;
 	}
 
 	for(i = index; i < array->count-1; i++) {
@@ -176,19 +180,19 @@ int DeleteArray(DynamicArray *array, int index)
 	}
 	array->count--;
 
-	return 0;
+	return TRUE;
 }
 
-int InsertArray(DynamicArray *array, datatype data, int index)
+BOOL InsertArray(DynamicArray *array, datatype data, int index)
 {
 	int i;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	if(index < 0 || index > array->count-1) {
-		return -2;
+		return FALSE;
 	}
 
 	if(IsFull(*array)) {
@@ -201,34 +205,34 @@ int InsertArray(DynamicArray *array, datatype data, int index)
 	array->data[index] = data;
 	array->count++;
 
-	return 0;
+	return TRUE;
 }
 
-int DestoryArray(DynamicArray *array)
+BOOL DestoryArray(DynamicArray *array)
 {
 	if(array == NULL) {
-		return -1;		
+		return FALSE;
 	}
 
 	free(array->data);
 
-	return 0;
+	return TRUE;
 }
 
-int InitArray(DynamicArray *array, int size)
+BOOL InitArray(DynamicArray *array, int size)
 {
 	if (array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	array->data = (datatype *)malloc(sizeof(datatype) * size);
 	if(array->data == NULL) {
-		return -1;
+		return FALSE;
 	}
 	array->size = size;
 	array->count = 0;
 
-	return 0;
+	return TRUE;
 }
 
 #endif
