@@ -11,6 +11,10 @@
 #include <malloc.h>
 #include <stdlib.h>
 
+#define		TRUE	1
+#define		FALSE	0
+
+typedef int BOOL;
 typedef int datatype;
 
 typedef struct Node {
@@ -19,72 +23,154 @@ typedef struct Node {
 }Node;
 
 void Swap(datatype *a, datatype *b);
-int InsertionSort(datatype *array, const int size);
-int BinaryInsertionSort(datatype *array, const int size);
-int ShellSort(datatype *array, const int size);
-int SelectionSort(datatype *array, const int size);
-int BubbleSort(datatype *array, const int size);
-int QuickSort(datatype *array, const int low, const int high);
-int MergeSort(datatype *array, const int low, const int high);
-int HeapSort(datatype *array, const int size);
-static int HeapAdjust(datatype *array, const int size, int s);
-int HighOrderRadixSort(datatype *array, const int size);
-int LowOrderRadixSort(datatype *array, const int size);
-int BucketSort(datatype *array, const int size, const int numberLimits);
-int CountingSort(datatype *array, const int size);
+BOOL InsertionSort(datatype *array, const int size);
+BOOL BinaryInsertionSort(datatype *array, const int size);
+BOOL ShellSort(datatype *array, const int size);
+BOOL SelectionSort(datatype *array, const int size);
+BOOL BubbleSort(datatype *array, const int size);
+BOOL QuickSort(datatype *array, const int low, const int high);
+BOOL MergeSort(datatype *array, const int low, const int high);
+BOOL HeapSort(datatype *array, const int size);
+static BOOL HeapAdjust(datatype *array, const int size, int s);
+BOOL HighOrderRadixSort(datatype *array, const int size);
+BOOL LowOrderRadixSort(datatype *array, const int size);
+BOOL BucketSort(datatype *array, const int size, const int numberLimits);
+BOOL PigeonholeSort(datatype *array, const int size);
+static BOOL GetMax(datatype *array, const int size, int *max);
+static BOOL GetMin(datatype *array, const int size, int *min);
+static int GetBit(const int number);
+BOOL CocktailSort(datatype *array, const int size);
 
-int CountingSort(datatype *array, const int size)
+BOOL CocktailSort(datatype *array, const int size)
 {
-	int i, j, max, min;
-	int *temp = NULL;
+	int i, j;
+	int tag;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
-	max = min = array[0];
+	for(i = 0; i <= size / 2; i++) {
+		tag = TRUE;
+
+		for(j = i; j < size-i-1; j++) {
+			if(array[j] > array[j+1]) {
+				Swap(array+j, array+j+1);
+				tag = FALSE;
+			}
+		}
+
+		if(tag) {
+			return TRUE;
+		}
+
+		for(j = j-1; j > i; j--) {
+			if(array[j] < array[j-1]) {
+				Swap(array+j, array+j-1);
+				tag = FALSE;
+			}
+		}
+
+		if(tag) {
+			return TRUE;
+		}
+	}
+
+	return TRUE;
+}
+
+static int GetBit(const int number)
+{
+	int n = number;
+	int bit = 0;
+
+	while(n > 0) {
+		n /= 10;
+	}
+
+	return bit;
+}
+
+static BOOL GetMin(datatype *array, const int size, int *min)
+{
+	int i;
+
+	if(array == NULL) {
+		return FALSE;
+	}
+
+	*min = array[0];
 	for(i = 1; i < size; i++) {
-		if(array[i] > max) {
-			max = array[i];
-		}
-
-		if(array[i] < min) {
-			min = array[i]	;
+		if(array[i] < *min) {
+			*min = array[i];
 		}
 	}
+
+	return TRUE;
+}
+
+static BOOL GetMax(datatype *array, const int size, int *max)
+{
+	int i;
+
+	if(array == NULL) {
+		return FALSE;
+	}
+
+	*max = array[0];
+	for(i = 1; i < size; i++) {
+		if(array[i] > *max) {
+			*max = array[i];
+		}
+	}
+
+	return TRUE;
+}
+
+BOOL PigeonholeSort(datatype *array, const int size)
+{
+	int i, j, max, min;
+	int *pigeonhole = NULL;
+
+	if(array == NULL) {
+		return FALSE;
+	}
+
+	GetMax(array, size, &max);
+	GetMin(array, size, &min);
 	
-	temp = (int *)calloc(max-min+1, sizeof(int));
-	if(temp == NULL) {
-		return -1;
+	pigeonhole = (int *)calloc(max-min+1, sizeof(int));
+	if(pigeonhole == NULL) {
+		return FALSE;
 	}
 
 	for(i = 0; i < size; i++) {
-		temp[array[i]-min]++;
+		pigeonhole[array[i]-min]++;
 	}
 
 	for(i = 0, j = 0; i <= max-min; i++) {
-		while(temp[i] > 0) {
+		while(pigeonhole[i] > 0) {
 			array[j++] = i+min;
-			temp[i]--;
+			pigeonhole[i]--;
 		}
 	}
 
-	return 0;
+	return TRUE;
 }
 
-int BucketSort(datatype *array, const int size, const int numberLimits)
+BOOL BucketSort(datatype *array, const int size, const int numberLimits)
 {
 	int i, j;
 	Node **temp;
 	Node *p, *s;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	temp = (Node **)calloc(numberLimits / 10 + 1, sizeof(Node *));
 	if(temp == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 
@@ -93,7 +179,7 @@ int BucketSort(datatype *array, const int size, const int numberLimits)
 
 		s = (Node *)malloc(sizeof(Node));
 		if(s == NULL) {
-			return -1;
+			return FALSE;
 		}
 		s->data = array[i];
 		s->next = NULL;
@@ -102,11 +188,16 @@ int BucketSort(datatype *array, const int size, const int numberLimits)
 		{
 			temp[array[i] / 10] = s;
 		} else {
-			while(p->next != NULL && p->next->data < array[i])
-				p = p->next;
+			if(p->data > s->data) {
+				s->next = p;
+				temp[array[i] / 10] = s;
+			} else {
+				while(p->next != NULL && p->next->data < s->data)
+					p = p->next;
 
-			s->next = p->next;
-			p->next = s;
+				s->next = p->next;
+				p->next = s;
+			}
 		}
 		
 	}
@@ -119,25 +210,25 @@ int BucketSort(datatype *array, const int size, const int numberLimits)
 		}
 	}
 
-	return 0;
+	return TRUE;
 }
 
-int LowOrderRadixSort(datatype *array, const int size)
+BOOL LowOrderRadixSort(datatype *array, const int size)
 {
-	return 0;
+	return TRUE;
 }
 
-int HighOrderRadixSort(datatype *array, const int size)
+BOOL HighOrderRadixSort(datatype *array, const int size)
 {
-	return 0;
+	return FALSE;
 }
 
-static int HeapAdjust(datatype *array, const int size, int s)
+static BOOL HeapAdjust(datatype *array, const int size, int s)
 {
 	int i, temp;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	temp = array[s];
@@ -154,15 +245,15 @@ static int HeapAdjust(datatype *array, const int size, int s)
 	}
 	array[s] = temp;
 
-	return 0;
+	return TRUE;
 }
 
-int HeapSort(datatype *array, const int size)
+BOOL HeapSort(datatype *array, const int size)
 {
 	int i;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	for(i = size/2; i > 0; i--) {
@@ -174,26 +265,26 @@ int HeapSort(datatype *array, const int size)
 		HeapAdjust(array, i, 0);
 	}
 
-	return 0;
+	return TRUE;
 }
 
-int MergeSort(datatype *array, const int low, const int high)
+BOOL MergeSort(datatype *array, const int low, const int high)
 {
 	int i, j, k;
 	int mid;
 	int *temp;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	if(low >= high) {
-		return -1;
+		return FALSE;
 	}
 
 	temp = (int *)malloc(sizeof(int)*(high-low+1));
 	if(temp == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	mid = (low + high) / 2;
@@ -224,21 +315,21 @@ int MergeSort(datatype *array, const int low, const int high)
 		array[low+i] = temp[i];
 	}
 
-	return 0;
+	return TRUE;
 }
 
-int QuickSort(datatype *array, const int low, int high)
+BOOL QuickSort(datatype *array, const int low, int high)
 {
 	int i = low;
 	int j = high;
 	int temp;
 	
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	if(low >= high) {
-		return -1;
+		return FALSE;
 	}
 
 	temp = array[low];
@@ -265,25 +356,25 @@ int QuickSort(datatype *array, const int low, int high)
 	QuickSort(array, low, i-1);
 	QuickSort(array, i+1, high);
 
-	return 0;
+	return TRUE;
 }
 
-int BubbleSort(datatype *array, const int size)
+BOOL BubbleSort(datatype *array, const int size)
 {
 	int i, j;
 	int tag;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	for(i = 0; i < size; i++) {
-		tag = 1;
+		tag = TRUE;
 
 		for(j = 0; j < size-i-1; j++) {
 			if(array[j] > array[j+1]) {
 				Swap(array+j, array+j+1);
-				tag = 0;
+				tag = FALSE;
 			}
 		}
 
@@ -292,15 +383,15 @@ int BubbleSort(datatype *array, const int size)
 		}
 	}
 
-	return 0;
+	return TRUE;
 }
 
-int SelectionSort(datatype *array, const int size)
+BOOL SelectionSort(datatype *array, const int size)
 {
 	int i, j, k;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	for(i = 0; i < size; i++) {
@@ -313,16 +404,16 @@ int SelectionSort(datatype *array, const int size)
 		Swap(array+i, array+k);
 	}
 
-	return 0;
+	return TRUE;
 }
 
-int ShellSort(datatype *array, int size)
+BOOL ShellSort(datatype *array, int size)
 {
 	int i, j, temp;
 	int increment = size;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	while(increment > 1) {
@@ -339,16 +430,16 @@ int ShellSort(datatype *array, int size)
 		}
 	}
 
-	return 0;
+	return TRUE;
 }
 
-int BinaryInsertionSort(datatype *array, int size)
+BOOL BinaryInsertionSort(datatype *array, int size)
 {
 	int i, j, low, high, mid;
 	int temp;
 
 	if(array == NULL) {
-		return -1;
+		return TRUE;
 	}
 
 	for(i = 1; i < size; i++) {
@@ -371,16 +462,16 @@ int BinaryInsertionSort(datatype *array, int size)
 		array[low] = temp;
 	}
 
-	return 0;
+	return TRUE;
 }
 
-int InsertionSort(datatype *array, int size)
+BOOL InsertionSort(datatype *array, int size)
 {
 	int i, j;
 	int temp;
 
 	if(array == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	for(i = 1; i < size; i++) {
@@ -394,7 +485,7 @@ int InsertionSort(datatype *array, int size)
 		array[j+1] = temp;
 	}
 
-	return 0;
+	return TRUE;
 }
 
 void Swap(datatype *a, datatype *b)

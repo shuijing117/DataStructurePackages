@@ -13,7 +13,7 @@
 #include "Sort.h"
 
 #define N 35
-#define NUM_LIMITS 200
+#define NUM_LIMITS 50
 
 void Print(datatype *data, const int size);
 void Copy(datatype *data1, datatype *data2, const int size);
@@ -95,13 +95,18 @@ int main(void)
 	Print(data, N);
 
 	Copy(temp, data, N);
-	printf("CountingSort:\n");
-	CountingSort(data, N);
+	printf("PigeonholeSort:\n");
+	PigeonholeSort(data, N);
 	Print(data, N);
 
 	Copy(temp, data, N);
 	printf("BucketSort:\n");
 	BucketSort(data, N, NUM_LIMITS);
+	Print(data, N);
+
+	Copy(temp, data, N);
+	printf("CocktailSort:\n");
+	CocktailSort(data, N);
 	Print(data, N);
 
 	return 0;
