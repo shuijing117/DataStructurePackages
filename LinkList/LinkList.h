@@ -11,6 +11,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define		TRUE	1
+#define		FALSE	0
+
+typedef int BOOL;
 typedef int datatype;
 
 typedef struct _LINKLIST {
@@ -23,33 +27,33 @@ typedef struct _LINKLISTHEAD {
 	struct _LINKLIST *next;
 }*LinkList, HeadNode;
 
-int InitLinkList(LinkList *head);
-int DestoryLinkList(LinkList *head);
-int InsertLinkList(LinkList *head, datatype data, Position p);
-int TailInsert(LinkList *head, datatype data);
-int HeadInsert(LinkList *head, datatype data);
+BOOL InitLinkList(LinkList *head);
+BOOL DestoryLinkList(LinkList *head);
+BOOL InsertLinkList(LinkList *head, datatype data, Position p);
+BOOL TailInsert(LinkList *head, datatype data);
+BOOL HeadInsert(LinkList *head, datatype data);
 Position Find(LinkList *head, datatype data, int (*compare)(datatype, datatype));
 Position FindPrevious(LinkList *head, datatype data, int (*compare)(datatype, datatype));
-int Delete(LinkList *head, datatype data, int (*compare)(datatype, datatype));
-int IsEmpty(const LinkList head);
+BOOL Delete(LinkList *head, datatype data, int (*compare)(datatype, datatype));
+BOOL IsEmpty(const LinkList head);
 
-int IsEmpty(const LinkList head)
+BOOL IsEmpty(const LinkList head)
 {
 	return head->count == 0;
 }
 
-int Delete(LinkList *head, datatype data, int (*compare)(datatype, datatype))
+BOOL Delete(LinkList *head, datatype data, int (*compare)(datatype, datatype))
 {
 	Position p, q;
 
 	if(head == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	while(1) {
 		p = FindPrevious(head, data, compare);
 		if(p == NULL) {
-			return -1;
+			return FALSE;
 		} else if(p == (Position)1) {
 			q = (*head)->next;
 			(*head)->next = q->next;
@@ -62,7 +66,7 @@ int Delete(LinkList *head, datatype data, int (*compare)(datatype, datatype))
 	}
 	(*head)->count--;
 
-	return 0;
+	return TRUE;
 }
 
 Position FindPrevious(LinkList *head, datatype data, int (*compare)(datatype, datatype))
@@ -102,37 +106,37 @@ Position Find(LinkList *head, datatype data, int (*compare)(datatype, datatype))
 }
 
 
-int HeadInsert(LinkList *head, datatype data)
+BOOL HeadInsert(LinkList *head, datatype data)
 {
 	Node *p;
 
 	if(head == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	p = (Node *)malloc(sizeof(Node));
 	if(p == NULL) {
-		return -1;
+		return FALSE;
 	}
 	p->data = data;
 	p->next = (*head)->next;
 	(*head)->next = p;
 	(*head)->count++;
 
-	return 0;
+	return TRUE;
 }
 
-int TailInsert(LinkList *head, datatype data)
+BOOL TailInsert(LinkList *head, datatype data)
 {
 	Node *p, *q;
 
 	if(head == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	p = (Node *)malloc(sizeof(Node));
 	if(p == NULL ) {
-		return -1;
+		return FALSE;
 	}
 	p->data = data;
 	p->next = NULL;
@@ -147,20 +151,20 @@ int TailInsert(LinkList *head, datatype data)
 	}
 	(*head)->count++;
 
-	return 0;
+	return TRUE;
 }
 
-int InsertLinkList(LinkList *head, datatype data, Position p)
+BOOL InsertLinkList(LinkList *head, datatype data, Position p)
 {
 	Node *node;
 
 	if(head == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	node = (Node *)malloc(sizeof(Node));
 	if(node == NULL) {
-		return -2;
+		return FALSE;
 	}
 	node->data = data;
 	node->next = p->next;
@@ -168,24 +172,24 @@ int InsertLinkList(LinkList *head, datatype data, Position p)
 
 	(*head)->count++;
 
-	return 0;
+	return TRUE;
 }
 
-int DestoryLinkList(LinkList *head)
+BOOL DestoryLinkList(LinkList *head)
 {
 	Node *p;
 
 	if(head == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	if((*head)->count == 0) {
-		return 0;
+		return TRUE;
 	}
 
 	if((*head)->count == 1) {
 		free((*head)->next);
-		return 0;
+		return TRUE;
 	}
 	
 	for(p = (*head)->next->next; p != NULL; p = p->next) {
@@ -193,24 +197,24 @@ int DestoryLinkList(LinkList *head)
 		(*head)->next = p;
 	}
 
-	return 0;
+	return TRUE;
 }
 
-int InitLinkList(LinkList *head)
+BOOL InitLinkList(LinkList *head)
 {
 	if(head == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	*head = (LinkList)malloc(sizeof(HeadNode));
 	if(*head == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	(*head)->count = 0;
 	(*head)->next = NULL;
 
-	return 0;
+	return TRUE;
 }
 
 #endif
