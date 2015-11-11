@@ -9,6 +9,10 @@
 
 #include <malloc.h>
 
+#define		TRUE	1
+#define		FALSE	0
+
+typedef int BOOL;
 typedef int datatype;
 
 typedef struct _DLINKLIST {
@@ -17,18 +21,18 @@ typedef struct _DLINKLIST {
 	struct _DLINKLIST *next;
 }*DoubleLinkList, *Position, Node;
 
-int InitDoubleLinkList(DoubleLinkList *L);
-int DestoryDoubleLinkList(DoubleLinkList *L);
-int HeadInsert(DoubleLinkList *L, datatype data);
-int TailInsert(DoubleLinkList *L, datatype data);
-int ClearDoubleLinkList(DoubleLinkList *L);
+BOOL InitDoubleLinkList(DoubleLinkList *L);
+BOOL DestoryDoubleLinkList(DoubleLinkList *L);
+BOOL HeadInsert(DoubleLinkList *L, datatype data);
+BOOL TailInsert(DoubleLinkList *L, datatype data);
+BOOL ClearDoubleLinkList(DoubleLinkList *L);
 
-int ClearDoubleLinkList(DoubleLinkList *L)
+BOOL ClearDoubleLinkList(DoubleLinkList *L)
 {
 	Node *p, *q;
 
 	if(L == NULL || *L == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	p = *L;
@@ -43,21 +47,20 @@ int ClearDoubleLinkList(DoubleLinkList *L)
 	}
 	(*L)->next = NULL;
 
-
-	return 0;
+	return TRUE;
 }
 
-int TailInsert(DoubleLinkList *L, datatype data)
+BOOL TailInsert(DoubleLinkList *L, datatype data)
 {
 	Node *p, *q;
 
 	if(L == NULL || *L == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	p = (Node *)malloc(sizeof(Node));
 	if(p == NULL) {
-		return -2;
+		return FALSE;
 	}
 	p->data = data;
 
@@ -69,20 +72,20 @@ int TailInsert(DoubleLinkList *L, datatype data)
 	p->prior = q;
 	q->next = p;
 
-	return 0;
+	return TRUE;
 }
 
-int HeadInsert(DoubleLinkList *L, datatype data)
+BOOL HeadInsert(DoubleLinkList *L, datatype data)
 {
 	Node *p;
 
 	if(L == NULL || *L == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	p = (Node *)malloc(sizeof(Node));
 	if(p == NULL) {
-		return -2;
+		return FALSE;
 	}
 	p->data = data;
 	p->prior = *L;
@@ -93,14 +96,14 @@ int HeadInsert(DoubleLinkList *L, datatype data)
 
 	(*L)->next = p;
 
-	return 0;
+	return TRUE;
 }
 
-int DestoryDoubleLinkList(DoubleLinkList *L)
+BOOL DestoryDoubleLinkList(DoubleLinkList *L)
 {
 	DoubleLinkList p, q;
 	if(L == NULL || *L == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	q = *L;
@@ -112,24 +115,23 @@ int DestoryDoubleLinkList(DoubleLinkList *L)
 	}
 	free(q);
 
-	return 0;
+	return TRUE;
 }
 
-int InitDoubleLinkList(DoubleLinkList *L)
+BOOL InitDoubleLinkList(DoubleLinkList *L)
 {
 	if(L == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	*L = (DoubleLinkList)malloc(sizeof(Node));
 	if(*L == NULL) {
-		return -1;
+		return FALSE;
 	}
 	(*L)->prior = NULL;
 	(*L)->next = NULL;
 
-	return 0;
+	return TRUE;
 }
-
 
 #endif
