@@ -9,6 +9,10 @@
 
 #include <malloc.h>
 
+#define		TRUE	1
+#define		FALSE	0
+
+typedef int BOOL;
 typedef int datatype;
 
 typedef struct _QUEUE {
@@ -18,107 +22,107 @@ typedef struct _QUEUE {
 	int size;
 }Queue;
 
-int InitQueue(Queue *q, int size);
-int DestoryQueue(Queue *q);
-int ClearQueue(Queue *q);
-int IsEmpty(Queue q);
-int IsFull(Queue q);
-int EnQueue(Queue *q, datatype data);
-int DeQueue(Queue *q, datatype *data);
-int GetHead(Queue q, datatype *data);
+BOOL InitQueue(Queue *q, int size);
+BOOL DestoryQueue(Queue *q);
+BOOL ClearQueue(Queue *q);
+BOOL IsEmpty(Queue q);
+BOOL IsFull(Queue q);
+BOOL EnQueue(Queue *q, datatype data);
+BOOL DeQueue(Queue *q, datatype *data);
+BOOL GetHead(Queue q, datatype *data);
 
-int GetHead(Queue q, datatype *data)
+BOOL GetHead(Queue q, datatype *data)
 {
 	if(IsEmpty(q)) {
-		return -1;
+		return FALSE;
 	}
 
 	*data = q.data[q.front];
 
-	return 0;
+	return TRUE;
 }
 
-int DeQueue(Queue *q, datatype *data)
+BOOL DeQueue(Queue *q, datatype *data)
 {
 	if(q == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	if(IsEmpty(*q)) {
-		return -2;
+		return FALSE;
 	}
 
 	*data = q->data[q->front];
 	q->front = (q->front + 1) % q->size;
 
-	return 0;
+	return TRUE;
 }
 
-int EnQueue(Queue *q, datatype data)
+BOOL EnQueue(Queue *q, datatype data)
 {
 	if(q == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	if(IsFull(*q)) {
-		return -2;
+		return FALSE;
 	}
 
 	q->data[q->rear] = data;
 	q->rear = (q->rear+1) % q->size;
 
-	return 0;
+	return TRUE;
 }
 
-int IsFull(Queue q)
+BOOL IsFull(Queue q)
 {
 	return (q.rear+1) % q.size == q.front;
 }
 
-int IsEmpty(Queue q)
+BOOL IsEmpty(Queue q)
 {
 	return q.front == q.rear;
 }
 
-int ClearQueue(Queue *q)
+BOOL ClearQueue(Queue *q)
 {
 	if(q == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	q->front = 0;
 	q->rear = 0;
 
-	return 0;
+	return TRUE;
 }
 
-int DestoryQueue(Queue *q)
+BOOL DestoryQueue(Queue *q)
 {
 	if(q == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	free(q->data);
 
-	return 0;
+	return TRUE;
 }
 
-int InitQueue(Queue *q, int size)
+BOOL InitQueue(Queue *q, int size)
 {
 	if(q == NULL) {
-		return -1;
+		return FALSE;
 	}
 
 	q->data = (datatype *)malloc(sizeof(datatype) * size);
 	if(q->data == NULL) {
-		return -2;
+		return FALSE;
 	}
 
 	q->size = size;
 	q->front = 0;
 	q->rear = 0;
 
-	return 0;
+	return TRUE;
 }
 
 #endif
