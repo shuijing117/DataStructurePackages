@@ -13,9 +13,9 @@
 
 #include "HashTable.h"
 
-void Print(HashTable ht);
+void PrintHashTable(HashTable ht);
 
-void Print(HashTable ht)
+void PrintHashTable(HashTable ht)
 {
 	int i;
 	Node *p;
@@ -40,10 +40,10 @@ void Print(HashTable ht)
 			printf("\n");
 		}
 	} else {
-		return ;
+		return;
 	}
 
-	return ;
+	return;
 }
 
 int main(void)
@@ -66,8 +66,8 @@ int main(void)
 	}
 	printf("\n");
 
-	Print(ht1);
-	Print(ht2);
+	PrintHashTable(ht1);
+	PrintHashTable(ht2);
 
 	DestoryHashTable(&ht1);
 	DestoryHashTable(&ht2);

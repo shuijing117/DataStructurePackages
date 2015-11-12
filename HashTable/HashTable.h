@@ -157,7 +157,7 @@ BOOL InitHashTable(HashTable *ht, int size, int mode)
 	ht->linkData = NULL;
 	ht->linearData = NULL;
 
-	printf("p:%d\n", ht->p);
+//	printf("p:%d\n", ht->p);
 
 	if(mode == _LINEAR_PROBE_) {
 		ht->linearData = (int *)calloc(size, sizeof(int));
