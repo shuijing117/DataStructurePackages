@@ -23,25 +23,48 @@ typedef struct Node {
 }Node;
 
 void Swap(datatype *a, datatype *b);
-BOOL InsertionSort(datatype *array, const int size);
-BOOL BinaryInsertionSort(datatype *array, const int size);
-BOOL ShellSort(datatype *array, const int size);
-BOOL SelectionSort(datatype *array, const int size);
-BOOL BubbleSort(datatype *array, const int size);
-BOOL QuickSort(datatype *array, const int low, const int high);
-BOOL MergeSort(datatype *array, const int low, const int high);
-BOOL HeapSort(datatype *array, const int size);
-static BOOL HeapAdjust(datatype *array, const int size, int s);
-BOOL HighOrderRadixSort(datatype *array, const int size);
-BOOL LowOrderRadixSort(datatype *array, const int size);
-BOOL BucketSort(datatype *array, const int size, const int numberLimits);
-BOOL PigeonholeSort(datatype *array, const int size);
-static BOOL GetMax(datatype *array, const int size, int *max);
-static BOOL GetMin(datatype *array, const int size, int *min);
-static int GetBit(const int number);
-BOOL CocktailSort(datatype *array, const int size);
 
-BOOL CocktailSort(datatype *array, const int size)
+static BOOL HeapAdjust(datatype *array, int size, int s);
+static BOOL GetMax(datatype *array, int size, int *max);
+static BOOL GetMin(datatype *array, int size, int *min);
+static int GetBit(const int number);
+
+BOOL InsertionSort(datatype *array, int size);
+BOOL BinaryInsertionSort(datatype *array, int size);
+BOOL ShellSort(datatype *array, int size);
+BOOL SelectionSort(datatype *array, int size);
+BOOL BubbleSort(datatype *array, int size);
+BOOL QuickSort(datatype *array, int low, int high);
+BOOL MergeSort(datatype *array, int low, int high);
+BOOL HeapSort(datatype *array, int size);
+BOOL HighOrderRadixSort(datatype *array, int size);
+BOOL LowOrderRadixSort(datatype *array, int size);
+BOOL BucketSort(datatype *array, int size, int numberLimits);
+BOOL PigeonholeSort(datatype *array, int size);
+BOOL CocktailSort(datatype *array, int size);
+BOOL GnomeSort(datatype *array, int size);
+
+BOOL GnomeSort(datatype *array, int size)
+{
+	int i = 0;
+
+	if(array == NULL) {
+		return FALSE;
+	}
+
+	while(i < size) {
+		if(i == 0 || array[i-1] <= array[i]) {
+			i++;
+		} else {
+			Swap(array + i-1, array + i);
+			i--;
+		}
+	}
+
+	return TRUE;
+}
+
+BOOL CocktailSort(datatype *array, int size)
 {
 	int i, j;
 	int tag;

@@ -109,5 +109,10 @@ int main(void)
 	CocktailSort(data, N);
 	Print(data, N);
 
+	Copy(temp, data, N);
+	printf("GnomeSort:\n");
+	GnomeSort(data, N);
+	Print(data, N);
+
 	return 0;
 }
