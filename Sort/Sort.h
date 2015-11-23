@@ -43,6 +43,38 @@ BOOL BucketSort(datatype *array, int size, int numberLimits);
 BOOL PigeonholeSort(datatype *array, int size);
 BOOL CocktailSort(datatype *array, int size);
 BOOL GnomeSort(datatype *array, int size);
+BOOL OddEvenSort(datatype *array, int size);
+
+BOOL OddEvenSort(datatype *array, int size)
+{
+	int i;
+	int tag;
+
+	if(array == NULL) {
+		return FALSE;
+	}
+
+	while(tag) {
+		tag = FALSE;
+
+		for(i = 1; i < size-1; i += 2) {
+			if(array[i] > array[i+1]) {
+				Swap(array+i, array+i+1);
+				tag = TRUE;
+			}
+		}
+
+		for(i = 0; i < size-1; i += 2) {
+			if(array[i] > array[i+1]) {
+				Swap(array+i, array+i+1);
+				tag = TRUE;
+			}
+		}
+	}
+
+
+	return TRUE;
+}
 
 BOOL GnomeSort(datatype *array, int size)
 {

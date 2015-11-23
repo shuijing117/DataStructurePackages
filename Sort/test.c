@@ -12,8 +12,8 @@
 
 #include "Sort.h"
 
-#define N 35
-#define NUM_LIMITS 50
+#define N 40
+#define NUM_LIMITS 99
 
 void Print(datatype *data, const int size);
 void Copy(datatype *data1, datatype *data2, const int size);
@@ -112,6 +112,11 @@ int main(void)
 	Copy(temp, data, N);
 	printf("GnomeSort:\n");
 	GnomeSort(data, N);
+	Print(data, N);
+
+	Copy(temp, data, N);
+	printf("OddEvenSort:\n");
+	OddEvenSort(data, N);
 	Print(data, N);
 
 	return 0;
