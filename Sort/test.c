@@ -119,5 +119,15 @@ int main(void)
 	OddEvenSort(data, N);
 	Print(data, N);
 
+	Copy(temp, data, N);
+	printf("PatienceSort:\n");
+	PatienceSort(data, N);
+	Print(data, N);
+
+	Copy(temp, data, N);
+	printf("BeadSort:\n");
+	BeadSort(data, N);
+	Print(data, N);
+
 	return 0;
 }

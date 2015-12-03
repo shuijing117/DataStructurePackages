@@ -44,6 +44,150 @@ BOOL PigeonholeSort(datatype *array, int size);
 BOOL CocktailSort(datatype *array, int size);
 BOOL GnomeSort(datatype *array, int size);
 BOOL OddEvenSort(datatype *array, int size);
+BOOL PatienceSort(datatype *array, int size);
+BOOL BeadSort(datatype *array, int size);
+
+BOOL BeadSort(datatype *array, int size)
+{
+	char **bead;
+	int i, j, k, n, len;
+
+	if(array == NULL) {
+		return FALSE;
+	}
+
+	GetMax(array, size, &len);
+
+	bead = (char **)calloc(size, sizeof(char *));
+	if(bead == NULL) {
+		return FALSE;
+	}
+
+	for(i = 0; i < size; i++) {
+		bead[i] = (char *)calloc(len, sizeof(char));
+		if(bead[i] == NULL) {
+			return FALSE;
+		}
+	}
+
+	for(i = 0; i < size; i++) { 
+		for(j = 0; j < array[i]; j++) {
+			bead[i][j] = 1;
+		}
+	}
+
+//	for(i = 0; i < size; i++) {
+//		for(j = 0; j < len; j++) {
+//			printf("%d ", bead[i][j]);
+//		}
+//		printf("\n");
+//	}
+
+	for(j = 0; j < len; j++) {
+		i = k = size-1;
+		while(i >= 0) {
+			if(bead[i--][j] == 1) {
+				bead[k--][j] = 1;
+			}
+		}
+
+		while(k >= 0) {
+			bead[k--][j] = 0;
+		}
+	}
+	
+//	printf("\n\n"); 
+//	
+//	for(i = 0; i < size; i++) { 
+//		for(j = 0; j < len; j++) {
+//			printf("%d ", bead[i][j]);
+//		}
+//		printf("\n");
+//	}
+
+	for(i = 0; i < size; i++) {
+		j = n = 0;
+		while(j < len) {
+			if(bead[i][j++] == 0) {
+				break;
+			}
+			n++;
+		}
+
+		array[i] = n;
+	}
+
+	return TRUE;
+}
+
+BOOL PatienceSort(datatype *array, int size)
+{
+	int i, j;
+	Node **bucket;
+	Node *p;
+
+	if(array == NULL) {
+		return FALSE;
+	}
+
+	bucket = (Node **)calloc(size, sizeof(Node *));
+	if(bucket == NULL) {
+		return FALSE;
+	}
+
+	for(i = 0; i < size; i++) {
+		j = 0;
+		while(bucket[j] != NULL && (bucket[j])->data < array[i])
+			j++;
+
+		p = (Node *)malloc(sizeof(Node));
+		if(p == NULL) {
+			return FALSE;
+		}
+		p->data = array[i];
+
+		if(bucket[j] != NULL) {
+			p->next = bucket[j];
+		} else {
+			p->next = NULL;
+		}
+
+		bucket[j] = p;
+	}
+
+//	printf("\n");
+//
+//	i = j = 0;
+//	while(bucket[j] != NULL) {
+//		p = bucket[j++];
+//		while(p != NULL) {
+//			printf("%d ", p->data);
+//			p = p->next;
+//		}
+//		printf("\n");
+//	}
+//
+//	printf("\n");
+
+
+	i = j = 0;
+	while(bucket[j] != NULL) {
+		p = bucket[j];
+		while(p != NULL) {
+			array[i++] = p->data;
+			p = p->next;
+		}
+		j++;
+	}
+
+//	for(i = 0; i < size; i++)
+//		printf("%d ", array[i]);
+//	printf("\n");
+
+	InsertionSort(array, size);
+
+	return TRUE;
+}
 
 BOOL OddEvenSort(datatype *array, int size)
 {
