@@ -10,9 +10,13 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
 
-#define		TRUE	1
-#define		FALSE	0
+#define		TRUE			1
+#define		FALSE			0
+	
+#define		LAPSE_RATE		1.3
 
 typedef int BOOL;
 typedef int datatype;
@@ -46,6 +50,70 @@ BOOL GnomeSort(datatype *array, int size);
 BOOL OddEvenSort(datatype *array, int size);
 BOOL PatienceSort(datatype *array, int size);
 BOOL BeadSort(datatype *array, int size);
+BOOL CombSort(datatype *array, int size);
+BOOL BogoSort(datatype *array, int size);
+
+BOOL BogoSort(datatype *array, int size)
+{
+	int i, j;
+	int tag;
+
+	if(array == NULL) {
+		return FALSE;
+	}
+
+	srand((unsigned int)time(NULL));
+
+	while(TRUE) {
+		tag = TRUE;
+		for(i = 1; i < size; i++) {
+			if(array[i] < array[i-1]) {
+				tag = FALSE;
+				break;
+			}
+		}
+
+		if(tag) {
+			break;
+		}
+
+		for(i = 0; i < size; i++) {
+			j = rand() % size;
+			Swap(array + i, array + j);
+		}
+	}
+
+	return TRUE;
+}
+
+BOOL CombSort(datatype *array, int size)
+{
+	int i, j;
+	int increment;
+
+	if(array == NULL ) {
+		return FALSE;
+	}
+
+	increment = size;
+
+	while(TRUE) {
+		increment = (int)(increment / LAPSE_RATE);
+		for(i = 0; i < increment; i++) {
+			for(j = i+increment; j < size; j += increment) {
+				if(array[j] < array[j-increment]) {
+					Swap(array+j, array+j-increment);
+				}
+			}
+		}
+
+		if(increment <= 1) {
+			break;
+		}
+	}	
+
+	return TRUE;
+}
 
 BOOL BeadSort(datatype *array, int size)
 {

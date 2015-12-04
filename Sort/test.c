@@ -12,7 +12,7 @@
 
 #include "Sort.h"
 
-#define N 40
+#define N 30
 #define NUM_LIMITS 99
 
 void Print(datatype *data, const int size);
@@ -128,6 +128,16 @@ int main(void)
 	printf("BeadSort:\n");
 	BeadSort(data, N);
 	Print(data, N);
+
+	Copy(temp, data, N);
+	printf("CombSort:\n");
+	CombSort(data, N);
+	Print(data, N);
+
+	Copy(temp, data, N);
+	printf("BogoSort(Do you believe fortune?):\n");
+//	BogoSort(data, N);
+//	Print(data, N);	
 
 	return 0;
 }
