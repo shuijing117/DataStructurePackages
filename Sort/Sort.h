@@ -6,6 +6,7 @@
     > Created Time: Sat 10 Oct 2015 07:53:16 PM CST
  ************************************************************************/
 #ifndef _SORT_H_
+#define _SORT_H_
 
 #include <stdio.h>
 #include <malloc.h>
