@@ -5,8 +5,8 @@
     > Mail: 100431075@qq.com 
     > Created Time: Thu 12 Nov 2015 11:11:56 AM CST
  ************************************************************************/
-
 #ifndef	_HASHTABLE_H_
+#define	_HASHTABLE_H_
 
 #include <malloc.h>
 
