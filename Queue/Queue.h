@@ -6,6 +6,7 @@
     > Created Time: Fri 09 Oct 2015 10:22:05 PM CST
  ************************************************************************/
 #ifndef _QUEUE_
+#define _QUEUE_
 
 #include <malloc.h>
 
