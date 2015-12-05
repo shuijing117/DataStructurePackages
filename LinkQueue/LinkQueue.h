@@ -6,6 +6,7 @@
     > Created Time: Wed 11 Nov 2015 07:49:39 PM CST
  ************************************************************************/
 #ifndef _LINKQUEUE_H_
+#define _LINKQUEUE_H_
 
 #include <malloc.h>
 
