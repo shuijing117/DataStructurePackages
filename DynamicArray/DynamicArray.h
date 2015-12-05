@@ -6,6 +6,7 @@
     > Created Time: Sun 27 Sep 2015 04:48:32 PM CST
  ************************************************************************/
 #ifndef DYNAMICARRAY_H
+#define DYNAMICARRAY_H
 
 #include <malloc.h>
 #include <stdlib.h>
