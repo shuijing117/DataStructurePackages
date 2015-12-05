@@ -6,6 +6,7 @@
     > Created Time: Mon 28 Sep 2015 05:09:00 PM CST
  ************************************************************************/
 #ifndef _LINKLIST_H_
+#define _LINKLIST_H_
 
 #include <malloc.h>
 #include <stdlib.h>
