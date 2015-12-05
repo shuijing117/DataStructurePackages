@@ -6,6 +6,7 @@
     > Created Time: Fri 09 Oct 2015 09:55:26 PM CST
  ************************************************************************/
 #ifndef _STACK_
+#define _STACK_
 
 #include <malloc.h>
 
