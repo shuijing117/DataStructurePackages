@@ -6,6 +6,7 @@
     > Created Time: Tue 29 Sep 2015 09:34:19 AM CST
  ************************************************************************/
 #ifndef _DOUBLELINKLIST_H_
+#define _DOUBLELINKLIST_H_
 
 #include <malloc.h>
 
