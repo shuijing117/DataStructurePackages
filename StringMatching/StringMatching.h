@@ -6,6 +6,7 @@
     > Created Time: Wed 30 Sep 2015 10:39:55 PM CST
  ************************************************************************/
 #ifndef _STRINGMATCHING_H_
+#define _STRINGMATCHING_H_
 
 #include <string.h>
 #include <malloc.h>
