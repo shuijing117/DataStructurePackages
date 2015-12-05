@@ -5,6 +5,9 @@
     > Mail: 100431075@qq.com 
     > Created Time: Wed 11 Nov 2015 10:11:58 PM CST
  ************************************************************************/
+#ifndef	_SEARCH_H_
+#define _SEARCH_H_
+
 #include <malloc.h>
 
 #define		TRUE	1
@@ -80,3 +83,5 @@ int LinearSearch(const datatype *array, int len, datatype data, BOOL (*compare)(
 
 	return -1;
 }
+
+#endif
