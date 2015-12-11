@@ -18,6 +18,14 @@ int main(void)
 
 	PrintAdjMatrix(&G);
 
+	printf("DepthTraverseGraph: ");
+	DepthTraverseGraph(&G);
+	printf("\n");
+
+	printf("BreadthTraverseGraph:");
+	BreadthTraverseGraph(&G);
+	printf("\n");
+
 	DestroyAdjMatrix(&G);
 
 	return 0;
