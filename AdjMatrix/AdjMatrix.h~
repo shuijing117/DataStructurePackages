@@ -9,7 +9,6 @@
 #define		_ADJ_MAXTRIX_H_
 
 #include <stdio.h>
-#include <string.h>
 #include <malloc.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -33,12 +32,6 @@ typedef struct _ARCNODE {
 	//OtherInfo
 }ArcNode;
 
-typedef struct _EDGE {
-	int i;
-	int j;
-	int we;
-}Edge;
-
 typedef struct _ADJMATRIX {
 	VertexData *vertex;
 	ArcNode **arcs;
@@ -49,7 +42,7 @@ typedef struct _ADJMATRIX {
 
 int *visited;
 
-BOOL CreateAdjMatrix(AdjMatrix *G, const char *verData, int vernum, const Edge *edges, int arcnum, GraphKind kind);
+BOOL CreateAdjMatrix(AdjMatrix *G);
 void DestroyAdjMatrix(AdjMatrix *G);
 void PrintAdjMatrix(const AdjMatrix *G);
 void DepthTraverseGraph(const AdjMatrix *G);
@@ -162,23 +155,40 @@ void DestroyAdjMatrix(AdjMatrix *G)
 	free(visited);
 }
 
-BOOL CreateAdjMatrix(AdjMatrix *G, const char *verData, int vernum, const Edge *edges, int arcnum, GraphKind kind)
+BOOL CreateAdjMatrix(AdjMatrix *G, char *verData, int vernum, int arcData, int arcnum, int graphType)
 {
-	int i, j;
+	int i;
+	int m, n;
+	int we;
 
-	G->vernum = vernum;
-	G->arcnum = arcnum;
-	G->kind = kind;
+	printf("1-Directed Graph.\n");
+	printf("2-Directed Network.\n");
+	printf("3-Undirected Graph.\n");
+	printf("4-Undirected network.\n");
+	printf("Please choose kind of your graph.):");
+	scanf("%d", &m);
+
+	G->kind = (GraphKind)m;
+
+	printf("How many vertexs in graph? ");
+	scanf("%d", &(G->vernum));
+	getchar();
 
 	visited = (int *)malloc(sizeof(int) * G->vernum);
 	if(visited == NULL)
 		return FALSE;
 	
-	G->vertex = (VertexData *)malloc(sizeof(VertexData) * (G->vernum+1));
+	G->vertex = (VertexData *)malloc(sizeof(VertexData) * G->vernum);
 	if(G->vertex == NULL)
 		return FALSE;
 
-	strcpy(G->vertex, verData);
+	printf("Please input your vertexs' info : ");
+	for(i = 0; i < G->vernum; i++)
+		scanf("%c", &((G->vertex)[i]));
+
+	printf("Vertex Information:\n");
+	for(i = 0; i < G->vernum; i++)
+		printf("%d:%c\n", i, (G->vertex)[i]);
 
 	G->arcs = (ArcNode **)malloc(sizeof(ArcNode *) * G->vernum);
 	if(G->arcs == NULL)
@@ -189,27 +199,50 @@ BOOL CreateAdjMatrix(AdjMatrix *G, const char *verData, int vernum, const Edge *
 		if((G->arcs)[i] == NULL)
 			return FALSE;
 	}
+	printf("How many edges in graph? ");
+	scanf("%d", &(G->arcnum));
+	getchar();
+
+	printf("Input edges.\n");
+	printf("Example:\n");
+	printf("if you choose directed graph or undirected graph, use <arc1, arc2>.\n");
+	printf("if you choose directed network or undirected network, use <arc1, arc2, weight>.\n");
+	printf("arc1 and arc2 is edges' number.\n");
+	printf("Please input edges:\n");
 
 	for(i = 0; i < G->arcnum; i++) {
-		if(edges[i].i >= 0 && edges[i].i < G->vernum && edges[i].j >= 0 && edges[i].j < G->vernum && edges[i].i != edges[i].j) {
-			if(G->kind == DG) 
-				(G->arcs)[edges[i].i][edges[i].j].adj = 1;
-			else if(G->kind == UDG) 
-				(G->arcs)[edges[i].i][edges[i].j].adj  = (G->arcs)[edges[i].j][edges[i].i].adj = 1;
-			else if(G->kind == DN)
-				(G->arcs)[edges[i].i][edges[i].j].adj = edges[i].we;
-			else if(G->kind == UDN)
-				(G->arcs)[edges[i].i][edges[i].j].adj = (G->arcs)[edges[i].j][edges[i].i].adj = edges[i].we;
-			else
-				return FALSE;
+		if(G->kind == DG) {
+			scanf("%d,%d", &m, &n);
+			if(m >= 0 && m < G->vernum && n >= 0 && n < G->vernum)
+				(G->arcs)[m][n].adj = 1;
+		} else if(G->kind == DN) {
+			scanf("%d,%d,%d", &m, &n, &we);
+			if(m >= 0 && m < G->vernum && n >= 0 && n < G->vernum)
+				(G->arcs)[m][n].adj = we;
+		} else if(G->kind == UDG) {
+			scanf("%d,%d", &m, &n);
+			if(m >= 0 && m < G->vernum && n >= 0 && n < G->vernum) {
+				(G->arcs)[m][n].adj = 1;
+				(G->arcs)[n][m].adj = 1;
+			}
+		} else if(G->kind == UDN) {
+			scanf("%d,%d,%d", &m, &n, &we);
+			if(m >= 0 && m < G->vernum && n >= 0 && n < G->vernum) {
+				(G->arcs)[m][n].adj = we;
+				(G->arcs)[n][m].adj = we;
+			}
+		} else {
+			return FALSE;
 		}
 	}
 
 	if(G->kind == DN || G->kind == UDN)
-		for(i = 0; i < G->vernum; i++)
-			for(j = 0; j < G->vernum; j++) 
-				if(i != j && (G->arcs)[i][j].adj == 0) {
-					(G->arcs)[i][j].adj = INFINITY;
+		for(m = 0; m < G->vernum; m++)
+			for(n = 0; n < G->vernum; n++) 
+				if(m != n && (G->arcs)[m][n].adj == 0) {
+					(G->arcs)[m][n].adj = INFINITY;
+					if(G->kind == UDN)
+						(G->arcs)[n][m].adj = INFINITY;
 				}
 	
 	return TRUE;
