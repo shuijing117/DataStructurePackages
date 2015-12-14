@@ -49,7 +49,7 @@ typedef struct _ADJMATRIX {
 
 int *visited;
 
-BOOL CreateAdjMatrix(AdjMatrix *G, const char *verData, int vernum, const Edge *edges, int arcnum, GraphKind kind);
+BOOL CreateAdjMatrix(AdjMatrix *G, const VertexData *verData, int vernum, const Edge *edges, int arcnum, GraphKind kind);
 void DestroyAdjMatrix(AdjMatrix *G);
 void PrintAdjMatrix(const AdjMatrix *G);
 void DepthTraverseGraph(const AdjMatrix *G);
@@ -162,7 +162,7 @@ void DestroyAdjMatrix(AdjMatrix *G)
 	free(visited);
 }
 
-BOOL CreateAdjMatrix(AdjMatrix *G, const char *verData, int vernum, const Edge *edges, int arcnum, GraphKind kind)
+BOOL CreateAdjMatrix(AdjMatrix *G, const VertexData *verData, int vernum, const Edge *edges, int arcnum, GraphKind kind)
 {
 	int i, j;
 
