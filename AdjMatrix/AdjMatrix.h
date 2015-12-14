@@ -54,10 +54,10 @@ void DestroyAdjMatrix(AdjMatrix *G);
 void PrintAdjMatrix(const AdjMatrix *G);
 void DepthTraverseGraph(const AdjMatrix *G);
 void BreadthTraverseGraph(const AdjMatrix *G);
-static void DepthFristSearch(const AdjMatrix *G, int i);
-static void BreadthFristSearch(const AdjMatrix *G, int i);
+static void DepthFirstSearch(const AdjMatrix *G, int i);
+static void BreadthFirstSearch(const AdjMatrix *G, int i);
 
-static void BreadthFristSearch(const AdjMatrix *G, int i)
+static void BreadthFirstSearch(const AdjMatrix *G, int i)
 {
 	int *queue;
 	int front, rear;
@@ -96,11 +96,11 @@ void BreadthTraverseGraph(const AdjMatrix *G)
 
 	for(i = 0; i < G->vernum; i++)
 		if(visited[i] == FALSE)
-			BreadthFristSearch(G, i);
+			BreadthFirstSearch(G, i);
 	
 }
 
-static void DepthFristSearch(const AdjMatrix *G, int i)
+static void DepthFirstSearch(const AdjMatrix *G, int i)
 {
 	int j;
 
@@ -109,7 +109,7 @@ static void DepthFristSearch(const AdjMatrix *G, int i)
 
 	for(j = 0; j < G->vernum; j++) 
 		if(visited[j] == FALSE && (G->arcs)[i][j].adj != 0 && (G->arcs)[i][j].adj != INFINITY)
-			DepthFristSearch(G, j);
+			DepthFirstSearch(G, j);
 }
 
 void DepthTraverseGraph(const AdjMatrix *G)
@@ -121,7 +121,7 @@ void DepthTraverseGraph(const AdjMatrix *G)
 
 	for(i = 0; i < G->vernum; i++)
 		if(visited[i] == FALSE)
-			DepthFristSearch(G, i);
+			DepthFirstSearch(G, i);
 }
 
 void PrintAdjMatrix(const AdjMatrix *G)
