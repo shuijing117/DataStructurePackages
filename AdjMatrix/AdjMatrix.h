@@ -71,17 +71,18 @@ static void BreadthFirstSearch(const AdjMatrix *G, int i)
 	queue[rear] = i;
 	rear = (rear+1) % G->vernum;
 	visited[i] = TRUE;
+	printf("%c ", (G->vertex)[i]);
 
 	while(front != rear) {
 		t = queue[front];
 		front = (front+1) % G->vernum;
-		printf("%c ", (G->vertex)[t]);
 
 		for(j = 0; j < G->vernum; j++)
 			if(visited[j] == FALSE && (G->arcs)[t][j].adj != 0 && (G->arcs)[t][j].adj != INFINITY) {
 				queue[rear] = j;
 				rear = (rear+1) % G->vernum;
 				visited[j] = TRUE;
+				printf("%c ", (G->vertex)[j]);
 			}
 	}
 
