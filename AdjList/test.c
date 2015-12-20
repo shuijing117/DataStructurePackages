@@ -98,12 +98,12 @@ int main(void)
 
 	PrintAdjList(&G);
 
-	printf("DepthTraverseGraph: ");
-	DepthTraverseGraph(&G);
+	printf("DepthTraverseList: ");
+	DepthTraverseList(&G);
 	printf("\n");
 
-	printf("BreadthTraverseGraph:");
-	BreadthTraverseGraph(&G);
+	printf("BreadthTraverseList:");
+	BreadthTraverseList(&G);
 	printf("\n");
 
 	DestroyAdjList(&G);
