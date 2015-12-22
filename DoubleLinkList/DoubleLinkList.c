@@ -5,6 +5,7 @@
     > Mail: 100431075@qq.com 
     > Created Time: Tue 22 Dec 2015 10:16:08 AM CST
  ************************************************************************/
+
 #include "DoubleLinkList.h"
 
 BOOL ClearDoubleLinkList(DoubleLinkList *L)

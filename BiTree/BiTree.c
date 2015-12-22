@@ -5,6 +5,7 @@
     > Mail: 100431075@qq.com 
     > Created Time: Tue 22 Dec 2015 10:15:55 AM CST
  ************************************************************************/
+
 #include "BiTree.h"
 
 int GetKthLevelNodeNumber(const BiTree btree, int k)

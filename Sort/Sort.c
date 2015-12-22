@@ -5,7 +5,6 @@
     > Mail: 100431075@qq.com 
     > Created Time: Tue 22 Dec 2015 10:17:35 AM CST
  ************************************************************************/
-
 #include "Sort.h"
 
 BOOL BogoSort(datatype *array, int size)
