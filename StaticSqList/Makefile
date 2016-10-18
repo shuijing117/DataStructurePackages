@@ -1,6 +1,6 @@
 CC=gcc
 
-SRCS=DynamicArray.c\
+SRCS=StaticSqList.c\
 	 test.c
 
 OBJS=$(SRCS:.c=.o)
@@ -8,10 +8,10 @@ OBJS=$(SRCS:.c=.o)
 EXEC=test
 
 start: $(OBJS)
-	$(CC) -o $(EXEC) $(OBJS)
+	$(CC) -std=c99 -o $(EXEC) $(OBJS)
 
 .c.o:
-	$(CC) -o $@ -c $<
+	$(CC) -std=c99 -o $@ -c $<
 
 .PHONY: clean
 
