@@ -89,3 +89,27 @@ Position linkList_GetNodePosition(LinkList list, int data)
 
 	return NULL;
 }
+
+/**
+ * desc    : 获取传入的节点的位置的前一个节点的位置
+ * param   : list - 单链表的头节点  p - 单链表中一个节点的首地址
+ * return  : NULL - 获取失败 !NULL - 节点的地址
+ */
+Position linkList_GetPrePosition(LinkList list, Position p)
+{
+	if (p == NULL || list == NULL || p == list->next )
+	{
+		return NULL;
+	}
+
+	Node *q = list->next;
+
+	while ( q )
+	{
+		if ( p->next == q )
+			return q;
+	}
+
+	return NULL;
+	
+}
