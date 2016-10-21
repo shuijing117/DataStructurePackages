@@ -1,189 +1,115 @@
 /*************************************************************************
-    > File Name: LinkList/LinkList.c
-    > Author: liuxuandong
-    > Develop: Ubuntu 14.04/vim 7.4/gcc 4.8.4
-    > Mail: 100431075@qq.com 
-    > Created Time: Tue 22 Dec 2015 10:16:46 AM CST
+ * FileName    : LinkList.c
+ * Environment : CentOS release 6.6 (Final)
+ *               VIM - Vi IMproved 7.2.411
+ *               GCC 4.4.7
+ * Author      : liuxuandong
+ * Mail        : 1004319075@qq.com 
+ * Created Time: Wed 19 Oct 2016 05:24:57 PM CST
+ * Description : 单链表的实现文件
  ************************************************************************/
 
-#include "LinkList.h"
+#include <malloc.h>
 
-BOOL IsEmpty(const LinkList head)
+/**
+ * desc   : 单链表的初始化函数 
+ * param  : void
+ * return : NULL - 生成单链表失败 !NULL - 单链表的头指针
+ */
+LinkList linkList_Create()
 {
-	return head->count == 0;
-}
-
-BOOL Delete(LinkList *head, datatype data, int (*compare)(datatype, datatype))
-{
-	Position p, q;
-
-	if(head == NULL) {
-		return FALSE;
-	}
-
-	while(1) {
-		p = FindPrevious(head, data, compare);
-		if(p == NULL) {
-			return FALSE;
-		} else if(p == (Position)1) {
-			q = (*head)->next;
-			(*head)->next = q->next;
-			free(q);
-		} else {
-			q = p->next;
-			p->next = q->next;
-			free(q);
-		}
-	}
-	(*head)->count--;
-
-	return TRUE;
-}
-
-Position FindPrevious(LinkList *head, datatype data, int (*compare)(datatype, datatype))
-{
-	Position p = (*head)->next;
-
-	if(p == NULL) {
+	LinkList = ( LinkList) malloc( sizeof(Node) );
+	if ( LinkList == NULL )
+	{
 		return NULL;
 	}
 
-	if(compare(p->data, data)) {
-		return (Position)1;
+	LinkList->next = NULL;
+
+	return LinkList;
+}
+
+/**
+ * desc   : 单链表的销毁函数
+ * param  : list - 单链表的头指针
+ * return : -1 - 销毁失败  0 - 销毁成功
+ */
+int linkList_Destory(LinkList list)
+{
+	Node *q, *p = list;
+
+	while ( p )
+	{
+		q = p;
+		p = p->next;
+		free(q);
 	}
 
-	while(p->next) {
-		if(compare(p->next->data, data)) {
+	list = NULL;
+
+	return 0;
+}
+
+/**
+ * desc   : 获取单链表的长度
+ * param  : list - 单链表的头指针
+ * return : -1 - 获取失败 >=0 单链表的长度
+ */
+int linkList_GetLength(LinkList list)
+{
+	Node *p;
+	int nodeNum;
+
+	if ( list == NULL )
+		return -1;
+
+	for (p = list->next, nodeNum = 0; p; p = p->next, ++nodeNum )
+		;
+
+	return nodeNum;
+}
+
+/**
+ * desc   : 获取数据为data的节点的地址
+ * param  : list - 单链表的头节点 data - 数值
+ * return : NULL - 获取失败 !NULL - 节点的地址
+ */
+Position linkList_GetNodePosition(LinkList list, int data)
+{
+	Node *p = list;
+
+	while ( p )
+	{
+		p = p->next;
+		if ( p->data == data )
+		{
 			return p;
 		}
-		p = p->next;
 	}
 
 	return NULL;
 }
 
-Position Find(LinkList *head, datatype data, int (*compare)(datatype, datatype))
+/**
+ * desc    : 获取传入的节点的位置的前一个节点的位置
+ * param   : list - 单链表的头节点  p - 单链表中一个节点的首地址
+ * return  : NULL - 获取失败 !NULL - 节点的地址
+ */
+Position linkList_GetPrePosition(LinkList list, Position p)
 {
-	Position p = (*head)->next;
+	if (p == NULL || list == NULL || p == list->next )
+	{
+		return NULL;
+	}
 
-	while(p) {
-		if(compare(p->data, data)) {
-			return p;
-		}
-		p = p->next;
+	Node *q = list->next;
+
+	while ( q )
+	{
+		if ( p->next == q )
+			return q;
 	}
 
 	return NULL;
-}
-
-
-BOOL HeadInsert(LinkList *head, datatype data)
-{
-	Node *p;
-
-	if(head == NULL) {
-		return FALSE;
-	}
-
-	p = (Node *)malloc(sizeof(Node));
-	if(p == NULL) {
-		return FALSE;
-	}
-	p->data = data;
-	p->next = (*head)->next;
-	(*head)->next = p;
-	(*head)->count++;
-
-	return TRUE;
-}
-
-BOOL TailInsert(LinkList *head, datatype data)
-{
-	Node *p, *q;
-
-	if(head == NULL) {
-		return FALSE;
-	}
-
-	p = (Node *)malloc(sizeof(Node));
-	if(p == NULL ) {
-		return FALSE;
-	}
-	p->data = data;
-	p->next = NULL;
-
-	if((*head)->next == NULL) {
-		(*head)->next = p;
-	} else {
-		for(q = (*head)->next; q->next != NULL; q = q->next)
-			;
-
-		q->next = p;
-	}
-	(*head)->count++;
-
-	return TRUE;
-}
-
-BOOL InsertLinkList(LinkList *head, datatype data, Position p)
-{
-	Node *node;
-
-	if(head == NULL) {
-		return FALSE;
-	}
-
-	node = (Node *)malloc(sizeof(Node));
-	if(node == NULL) {
-		return FALSE;
-	}
-	node->data = data;
-	node->next = p->next;
-	p->next = node;
-
-	(*head)->count++;
-
-	return TRUE;
-}
-
-BOOL DestoryLinkList(LinkList *head)
-{
-	Node *p;
-
-	if(head == NULL) {
-		return FALSE;
-	}
-
-	if((*head)->count == 0) {
-		return TRUE;
-	}
-
-	if((*head)->count == 1) {
-		free((*head)->next);
-		return TRUE;
-	}
 	
-	for(p = (*head)->next->next; p != NULL; p = p->next) {
-		free((*head)->next);
-		(*head)->next = p;
-	}
-
-	return TRUE;
-}
-
-BOOL InitLinkList(LinkList *head)
-{
-	if(head == NULL) {
-		return FALSE;
-	}
-
-	*head = (LinkList)malloc(sizeof(HeadNode));
-	if(*head == NULL) {
-		return FALSE;
-	}
-
-	(*head)->count = 0;
-	(*head)->next = NULL;
-
-	return TRUE;
 }
