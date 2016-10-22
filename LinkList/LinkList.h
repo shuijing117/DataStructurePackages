@@ -22,6 +22,9 @@ int linkList_Destory(LinkList list);
 int linkList_GetLength(LinkList list);
 Position linkList_GetNodePosition(LinkList list, int data);
 Position linkList_GetPrePosition(LinkList list, Position p);
-
+int linkList_GetValue(LinkList list, int index, int *data);
+int linkList_ModifyValue(LinkList list, int index, int data);
+int linkList_Insert(LinkList list, int index, int data);
+int linkList_Delete(LinkList list, int index, int *data);
 
 #endif
