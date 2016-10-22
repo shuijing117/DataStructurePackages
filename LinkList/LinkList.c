@@ -111,5 +111,58 @@ Position linkList_GetPrePosition(LinkList list, Position p)
 	}
 
 	return NULL;
-	
+}
+
+/**
+ * desc   : 获取单链表list中的第index个节点的值
+ * param  : list - 单链表的头节点的地址  index - 节点的位置  data - 通过该指针将值返回
+ * return : -1 - 获取失败  0 - 获取成功
+ */
+int linkList_GetValue(LinkList list, int index, int *data)
+{
+	if ( list )
+	{
+		if ( index <= 0 || index > linkList_GetLength(list) )
+		{
+			return -1;
+		}
+
+		Node * p = list->next;
+		int n = 1;
+		while ( n != index && p)
+		{
+			p = p->next;
+			n++;
+		}
+
+		*data = p->data;
+
+		return 0;
+	}
+
+	return -1;
+}
+
+/**
+ *
+ */
+int linkList_ModifyValue(LinkList list, int index, int data)
+{
+
+}
+
+/**
+ *
+ */
+int linkList_Insert(LinkList list, int index, int data)
+{
+
+}
+
+/**
+ *
+ */
+int linkList_Delete(LinkList list, int index, int *data)
+{
+
 }
